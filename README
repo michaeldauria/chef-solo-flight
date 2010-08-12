@@ -1,0 +1,33 @@
+Chef Solo Flight
+
+This is based off of http://github.com/threedaymonk/chef-ec2
+
+If your current server setup does not require the use of Chef Server, Chef Solo is a great
+alternative until you need to move up.  The ideal use case is when you only have a few
+servers that you must maintain.
+
+If you need a head start on some recipes, go ahead and grab the cookbooks submodule:
+$ git submodule init
+$ git submodule update
+
+To get started, perform the following steps:
+
+1. Bring up a new instance/machine somewhere, a bare OS is perfect.
+
+2. Generate an ssh key if you do not have one (accept defaults or assign a password):
+  $ ssh-keygen
+
+3. Get your ssh key onto the instance:
+  $ cat .ssh/id_rsa.pub | ssh <server_name> "mkdir .ssh && cat - >> ~/.ssh/authorized_keys && chmod 600 ~/.ssh/authorized_keys"
+  
+4. Bootstrap Chef onto the instance:
+  $ rake chef:bootstrap server=<server_name>
+
+Now you must create some DNA for your servers.  Create new DNA.json files per server, please see the Chef
+documentation here: http://wiki.opscode.com/display/chef/Cooking+with+Chef
+
+Once complete, you can then update your instances like so:
+  $ rake chef: server=<server_name>
+
+You can run the above command as many times as you will like, the instance will only be updated
+if there were changes to your DNA.
