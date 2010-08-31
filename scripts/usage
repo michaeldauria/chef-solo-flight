@@ -1,0 +1,14 @@
+#!/bin/bash
+
+__usage() {
+  printf "
+  ${0} [command] <server_1> [server_2] [...]
+
+  commands:
+    bootstrap : Bootstrap server(s) with Chef.
+    update    : Update Cookbooks on remote server(s).
+    help      : Display help/usage.
+    version   : Version information.
+
+"
+}

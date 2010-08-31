@@ -1,0 +1,17 @@
+=== USAGE ===
+
+$ chef-solo-flight <command> <server_1> [server_2] [...]
+
+Where command is one of:
+ - bootstrap
+ - update
+ - help
+ - version
+
+Server should be in the form of a standard username/server spec:
+ - server.com
+ - cname.server.com
+ - user@server.com
+ - user@cname.server.com
+ - user@server.com:22
+ - user@cname.server.com:22

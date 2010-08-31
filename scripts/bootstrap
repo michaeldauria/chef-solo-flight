@@ -1,0 +1,46 @@
+#!/bin/bash
+
+__bootstrap() {
+  echo -e ". Bootstrapping Servers..."
+
+  while [[ $# -gt 0 ]] ; do
+    server="$1" ; shift
+    echo ".. ${server}..."
+
+    ssh ${server} "$bootstrap_sh"
+  done
+
+  echo ". Done!"
+}
+
+bootstrap_sh='
+command -v chef-solo >/dev/null && {
+  echo ".. Chef Already Bootsrapped - skipping..."
+  exit
+}
+
+echo ".. Installing Prerequisite Packages..."
+apt-get update && apt-get install -y build-essential curl
+
+case `uname -m` in
+  x86_64)
+    REE="http://rubyforge.org/frs/download.php/71098/ruby-enterprise_1.8.7-2010.02_amd64_ubuntu10.04.deb"
+    ;;
+  *)
+    REE="http://rubyforge.org/frs/download.php/71100/ruby-enterprise_1.8.7-2010.02_i386_ubuntu10.04.deb"
+    ;;
+esac
+
+echo ".. Installing Ruby..."
+curl -s -L -o ree.deb "${REE}" && \
+dpkg -i ree.deb && \
+rm ree.deb
+
+echo ".. Installing Ruby Gems..."
+gem install -v ${rubygems_version} rubygems-update --no-rdoc --no-ri && \
+ruby `gem env gemdir`/gems/rubygems-update-${rubygems_version}/setup.rb
+
+echo ".. Installing Chef..."
+gem install -v ${ohai_version} ohai --no-rdoc --no-ri
+gem install -v ${chef_version} chef --no-rdoc --no-ri
+'

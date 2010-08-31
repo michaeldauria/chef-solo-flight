@@ -1,0 +1,18 @@
+#!/bin/bash
+
+source scripts/config
+source scripts/bootstrap
+source scripts/update
+
+source scripts/usage
+source scripts/version
+
+if [[ $# -gt 0 ]] ; then
+  token="$1" ; shift
+  case "$token" in
+    bootstrap)  __bootstrap $* ; exit ;;
+    update)     __update $* ; exit ;;
+    version)    __version ; exit ;;
+    help|*)     __usage ;;
+  esac
+fi

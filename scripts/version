@@ -1,0 +1,10 @@
+#!/bin/bash
+
+__version() {
+  _author="Michael D'Auria"
+  _author_email="michael.dauria@gmail.com"
+  _website="http://github.com/michaeldauria/chef-solo-flight"
+  _version="0.1"
+
+  echo -e "${0} ${_version} by ${_author} (${_author_email}) [${_website}]"
+}
