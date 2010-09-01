@@ -18,7 +18,7 @@ __update() {
       rsync -Caz --delete --exclude .git --rsh='ssh' ./ ${server}:${chef_file_dest}
 
       echo ".. Running Chef Solo..."
-      ssh ${server} "chef-solo -c ${chef_file_dest}/solo.rb -j ${chef_file_dest}/dna/${server_env}/${server_role}.json"
+      ssh ${server} "chef-solo -c ${chef_file_dest}/solo-config.rb -j ${chef_file_dest}/dna/${server_env}/${server_role}.json"
     else
       echo ".. Invalid Server Name - skipping..."
     fi
