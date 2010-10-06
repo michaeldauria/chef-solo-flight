@@ -21,13 +21,13 @@ To get started, perform the following steps:
   $ cat .ssh/id_rsa.pub | ssh <server_name> "mkdir .ssh && cat - >> ~/.ssh/authorized_keys && chmod 600 ~/.ssh/authorized_keys"
   
 4. Bootstrap Chef onto the instance:
-  $ rake chef:bootstrap server=<server_name>
+  $ ./chef-solo-flight bootstrap <server_1> [<server_2>] ...
 
 Now you must create some DNA for your servers.  Create new DNA.json files per server, please see the Chef
 documentation here: http://wiki.opscode.com/display/chef/Cooking+with+Chef
 
 Once complete, you can then update your instances like so:
-  $ rake chef: server=<server_name>
+  $ ./chef-solo-flight update <server_1> [<server_2>] ...
 
-You can run the above command as many times as you will like, the instance will only be updated
+You can run the above command as many times as you will like, the instance(s) will only be updated
 if there were changes to your DNA.
