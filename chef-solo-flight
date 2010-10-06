@@ -15,4 +15,6 @@ if [[ $# -gt 0 ]] ; then
     version)    __version ; exit ;;
     help|*)     __usage ;;
   esac
+else
+  __usage
 fi
