@@ -20,7 +20,9 @@ command -v chef-solo >/dev/null && {
 }
 
 echo ".. Installing Prerequisite Packages..."
-sudo apt-get update && sudo apt-get install -y build-essential curl
+sudo apt-get update
+sudo apt-get upgrade
+sudo apt-get install -y build-essential curl
 
 case `uname -m` in
   x86_64)
