@@ -12,13 +12,11 @@ __update() {
       server_loc=${BASH_REMATCH[2]}
       server_num=${BASH_REMATCH[3]}
 
-      server_env=dev
-
       echo ".. Updating Cookbooks..."
       rsync -Caz --delete --exclude .git --rsh='ssh' ./ ${server}:${chef_file_dest}
 
       echo ".. Running Chef Solo..."
-      ssh ${server} "chef-solo -c ${chef_file_dest}/solo-config.rb -j ${chef_file_dest}/dna/${server_env}/${server_role}.json"
+      ssh ${server} "sudo chef-solo -c ${chef_file_dest}/solo-config.rb -j ${chef_file_dest}/dna/${server_role}-${server_loc}-${server_num}.json"
     else
       echo ".. Invalid Server Name - skipping..."
     fi
