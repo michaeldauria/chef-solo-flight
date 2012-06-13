@@ -14,3 +14,4 @@ file_store_path  chef_recipes
 log_level        :info
 log_location     STDOUT
 ssl_verify_mode  :verify_none
+verbose_logging  false
