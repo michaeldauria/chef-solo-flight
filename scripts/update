@@ -8,6 +8,7 @@ __update() {
     echo ".. ${server}..."
 
     echo ".. Updating Cookbooks..."
+    echo "... rsync -Caz --delete --exclude .git --rsh='ssh' ./ ${server}:${chef_file_dest}"
     rsync -Caz --delete --exclude .git --rsh='ssh' ./ ${server}:${chef_file_dest}
 
     echo ".. Running Chef Solo..."
