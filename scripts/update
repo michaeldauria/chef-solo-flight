@@ -12,7 +12,19 @@ __update() {
     rsync -Caz --delete --exclude .git --rsh='ssh' ./ ${server}:${chef_file_dest}
 
     echo ".. Running Chef Solo..."
-    ssh ${server} "sudo chmod -R a+w /tmp/chef && sudo chef-solo -c ${chef_file_dest}/solo-config.rb -j ${chef_file_dest}/dna/${server}.json"
+    ssh ${server} "
+sudo chmod -R a+w /tmp/chef
+source /etc/profile
+if command -v rvm >/dev/null; then
+ rvmsudo chef-solo -c ${chef_file_dest}/solo-config.rb -j ${chef_file_dest}/dna/${server}.json
+elif [ -x /usr/local/bin/chef-solo ]; then
+  sudo /usr/local/bin/chef-solo -c ${chef_file_dest}/solo-config.rb -j ${chef_file_dest}/dna/${server}.json
+elif [ -x /var/lib/gems/1.9.1/bin/chef-solo ]; then
+  sudo /var/lib/gems/1.9.1/bin/chef-solo -c ${chef_file_dest}/solo-config.rb -j ${chef_file_dest}/dna/${server}.json
+else
+  echo chef-solo command not found
+fi
+"
   done
 
   echo ". Done!"
