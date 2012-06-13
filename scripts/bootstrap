@@ -21,32 +21,29 @@ command -v chef-solo >/dev/null && {
 
 echo ".. Installing Prerequisite Packages..."
 sudo apt-get update
-sudo apt-get upgrade
-sudo apt-get install -y build-essential curl
+sudo apt-get upgrade -y
+sudo apt-get install -y build-essential git-core curl libssl-dev libxslt-dev libxml2-dev libreadline-dev zlib1g-dev
+sudo apt-get install -y binutils-doc gcc autoconf flex bison libtool
 
-case `uname -m` in
-  x86_64)
-    REE="http://rubyforge.org/frs/download.php/71098/ruby-enterprise_1.8.7-2010.02_amd64_ubuntu10.04.deb"
-    ;;
-  *)
-    REE="http://rubyforge.org/frs/download.php/71100/ruby-enterprise_1.8.7-2010.02_i386_ubuntu10.04.deb"
-    ;;
-esac
+echo ".. Installing Ruby 1.9.2"
+sudo apt-get install -y ruby1.9.1 ruby1.9.1-dev rubygems1.9.1 irb1.9.1 ri1.9.1 rdoc1.9.1 libopenssl-ruby1.9.1
 
-rubygems_version=1.3.7
-ohai_version=0.5.6
-chef_version=0.9.8
+echo ".. Updating Ruby Alternatives"
+sudo update-alternatives --install /usr/bin/ruby ruby /usr/bin/ruby1.9.1 400 \
+         --slave   /usr/share/man/man1/ruby.1.gz ruby.1.gz \
+                        /usr/share/man/man1/ruby1.9.1.1.gz \
+        --slave   /usr/bin/ri ri /usr/bin/ri1.9.1 \
+        --slave   /usr/bin/irb irb /usr/bin/irb1.9.1 \
+        --slave   /usr/bin/rdoc rdoc /usr/bin/rdoc1.9.1 \
+        --slave   /usr/bin/gem gem /usr/bin/gem1.9.1
 
-echo ".. Installing Ruby..."
-curl -s -L -o ree.deb "${REE}" && \
-sudo dpkg -i ree.deb && \
-rm ree.deb
+sudo update-alternatives --config ruby
+sudo update-alternatives --config gem
 
-echo ".. Installing Ruby Gems..."
-sudo gem install -v ${rubygems_version} rubygems-update --no-rdoc --no-ri && \
-sudo ruby `gem env gemdir`/gems/rubygems-update-${rubygems_version}/setup.rb
+ohai_version=0.6.10
+chef_version=0.10.8
 
-echo ".. Installing Chef..."
+echo ".. Installing Chef ..."
 sudo gem install -v ${ohai_version} ohai --no-rdoc --no-ri
 sudo gem install -v ${chef_version} chef --no-rdoc --no-ri
 '
